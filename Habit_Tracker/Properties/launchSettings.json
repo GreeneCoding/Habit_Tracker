@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Habit_Tracker": {
+      "commandName": "Project",
+      "workingDirectory": "C:\\Users\\Daniel ProEd\\source\\repos\\Habit_Tracker"
+    }
+  }
+}
