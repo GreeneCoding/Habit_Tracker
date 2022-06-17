@@ -24,8 +24,26 @@ void GetAllRecords()
         using (var tableCmd = connection.CreateCommand())
         {
             connection.Open();
-            tableCmd.CommandText = @"CREATE TABLE IF NOT EXISTS Reading (Id INTEGER PRIMARY KEY AUTOINCREMENT, Date TEXT, Quantity INTEGER)";
+            tableCmd.CommandText = @"Select * from Reading";
             tableCmd.ExecuteNonQuery();
+            
+        }
+    }
+}
+
+void CreateRecords()
+{
+    
+    
+    using (var connection = new SqliteConnection(connectionString))
+    {
+        using (var tableCmd = connection.CreateCommand())
+        {
+            connection.Open();
+            tableCmd.CommandText = @"INSERT INTO Reading (Date, Quantity) VALUES (@date,@quantity)";
+            tableCmd.Parameters.AddWithValue("@date",date);
+            tableCmd.ExecuteNonQuery();
+
         }
     }
 }
@@ -56,6 +74,13 @@ void GetUserInput()
                 break;
             case "1":
                 GetAllRecords();
+                break;
+            case "2":
+                Console.WriteLine("Please provide Date");
+               var date = Console.ReadLine();
+                Console.WriteLine("Please provide the quantity, or amount of times you read today.");
+               int quantity = Convert.ToInt32(Console.ReadLine());
+                CreateRecords();
                 break;
         }
     }
