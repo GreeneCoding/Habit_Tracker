@@ -3,7 +3,7 @@ Habit_Tracker
 Creating my first Console App in C#:
 
 
-Requirements
+<H4>Requirements</H4>
 
     1. This is an application where you’ll register one habit.
     2. This habit can't be tracked by time (ex. hours of sleep), only by quantity (ex. number of water glasses a day)
