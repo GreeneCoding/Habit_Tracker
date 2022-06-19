@@ -16,3 +16,14 @@ Creating my first Console App in C#:
     9. The application should only be terminated when the user inserts 0.
     10. You can only interact with the database using raw SQL. You can’t use mappers such as Entity Framework.
     11. Your project needs to contain a Read Me file where you'll explain how your app works.
+    
+<H4>Creating our app database</H4>
+    
+<H4>Selecting All database entries</H4>
+
+<H4>Inserting Database Entries</H4>
+
+<H4>Deleting Database Entries</H4>
+
+<H4>Updating Database Entries</H4>
+
