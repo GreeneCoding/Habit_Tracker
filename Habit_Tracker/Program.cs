@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
+using System.Globalization;
 
 string connectionString = @"Data Source=habit_tracker.db";
 
@@ -27,11 +28,40 @@ void GetAllRecords()
             tableCmd.CommandText = @"Select * from Reading";
             tableCmd.ExecuteNonQuery();
 
-            List<Reading> tabledata = new();
+            List<Reading> Readingtabledata = new();
 
             SqliteDataReader reader = tableCmd.ExecuteReader();
 
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    Readingtabledata.Add(
+                    new Reading
+                    {
+                        Id = reader.GetInt32(0),
+                        Date = reader.GetString(1),
+                        Quantity = reader.GetInt32(2)
+                    }
+                        );
+                }
+            }
+            else
+            {
+                Console.WriteLine("No rows found");
+            }
+
+            connection.Close();
             
+            Console.WriteLine("-----------------------------------------");
+            foreach(var row in Readingtabledata)
+            {
+                Console.WriteLine($"{row.Id} | {row.Date} | Books Read: {row.Quantity}");
+            
+            }
+            Console.WriteLine("-----------------------------------------");
+
+
         }
     }
 }
@@ -93,8 +123,8 @@ void GetUserInput()
 
 public class Reading
 { 
-int Id { get; set; } 
-string? Date { get; set; }
-int Quantity { get; set; }
+public int Id { get; set; } 
+public string? Date { get; set; }
+public int Quantity { get; set; }
 }
 
