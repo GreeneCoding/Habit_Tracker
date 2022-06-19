@@ -26,6 +26,11 @@ void GetAllRecords()
             connection.Open();
             tableCmd.CommandText = @"Select * from Reading";
             tableCmd.ExecuteNonQuery();
+
+            List<Reading> tabledata = new();
+
+            SqliteDataReader reader = tableCmd.ExecuteReader();
+
             
         }
     }
@@ -85,3 +90,11 @@ void GetUserInput()
         }
     }
 }
+
+public class Reading
+{ 
+int Id { get; set; } 
+string? Date { get; set; }
+int Quantity { get; set; }
+}
+
