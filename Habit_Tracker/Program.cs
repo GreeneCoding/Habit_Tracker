@@ -68,10 +68,15 @@ void GetAllRecords()
 
 void CreateRecords()
 {
-    Console.WriteLine("Please provide Date");
-    var date = Console.ReadLine();
+    Console.WriteLine("Please provide Date in format mm-dd-yyyy. Type 0 to return to main menu.");
+    string date = Console.ReadLine();
+
+    if (date == "0") GetUserInput();
+
     Console.WriteLine("Please provide the quantity, or amount of times you read today.");
-    var quantity = Convert.ToInt32(Console.ReadLine());
+    int quantity = Convert.ToInt32(Console.ReadLine());
+
+    if (quantity == 0) GetUserInput();
 
     using (var connection = new SqliteConnection(connectionString))
     {
