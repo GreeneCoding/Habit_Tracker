@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
+using System.Globalization;
 
 string connectionString = @"Data Source=habit_tracker.db";
 
@@ -26,15 +27,57 @@ void GetAllRecords()
             connection.Open();
             tableCmd.CommandText = @"Select * from Reading";
             tableCmd.ExecuteNonQuery();
+
+            List<Reading> Readingtabledata = new();
+
+            SqliteDataReader reader = tableCmd.ExecuteReader();
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    Readingtabledata.Add(
+                    new Reading
+                    {
+                        Id = reader.GetInt32(0),
+                        Date = reader.GetString(1),
+                        Quantity = reader.GetInt32(2)
+                    }
+                        );
+                }
+            }
+            else
+            {
+                Console.WriteLine("No rows found");
+            }
+
+            connection.Close();
             
+            Console.WriteLine("-----------------------------------------");
+            foreach(var row in Readingtabledata)
+            {
+                Console.WriteLine($"{row.Id} | {row.Date} | Books Read: {row.Quantity}");
+            
+            }
+            Console.WriteLine("-----------------------------------------");
+
+
         }
     }
 }
 
 void CreateRecords()
 {
-    
-    
+    Console.WriteLine("Please provide Date in format mm-dd-yyyy. Type 0 to return to main menu.");
+    string date = Console.ReadLine();
+
+    if (date == "0") GetUserInput();
+
+    Console.WriteLine("Please provide the quantity, or amount of times you read today.");
+    int quantity = Convert.ToInt32(Console.ReadLine());
+
+    if (quantity == 0) GetUserInput();
+
     using (var connection = new SqliteConnection(connectionString))
     {
         using (var tableCmd = connection.CreateCommand())
@@ -42,10 +85,13 @@ void CreateRecords()
             connection.Open();
             tableCmd.CommandText = @"INSERT INTO Reading (Date, Quantity) VALUES (@date,@quantity)";
             tableCmd.Parameters.AddWithValue("@date",date);
+            tableCmd.Parameters.AddWithValue("@quantity",quantity);
             tableCmd.ExecuteNonQuery();
 
         }
     }
+    
+    GetAllRecords();
 }
 
 GetUserInput();
@@ -76,12 +122,16 @@ void GetUserInput()
                 GetAllRecords();
                 break;
             case "2":
-                Console.WriteLine("Please provide Date");
-               var date = Console.ReadLine();
-                Console.WriteLine("Please provide the quantity, or amount of times you read today.");
-               int quantity = Convert.ToInt32(Console.ReadLine());
                 CreateRecords();
                 break;
         }
     }
 }
+
+public class Reading
+{ 
+public int Id { get; set; } 
+public string? Date { get; set; }
+public int Quantity { get; set; }
+}
+
