@@ -90,6 +90,8 @@ void CreateRecords()
 
         }
     }
+    
+    GetAllRecords();
 }
 
 GetUserInput();
