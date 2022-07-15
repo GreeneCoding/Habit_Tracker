@@ -74,22 +74,8 @@ namespace habit_tracker
 
             string CreateRecords()
             {
-                Console.WriteLine("Please provide Date in format mm-dd-yyyy. Type 0 to return to main menu.");
-                var date = Console.ReadLine();
-                
-                    if (date == "0") GetUserInput();
-
-                    while (!DateTime.TryParseExact(date, "mm-dd-yyyy", new CultureInfo("en-US"), DateTimeStyles.None, out _))
-                    {
-                        Console.WriteLine("\n\nInvalid date provided. (Format: dd-mm-yyyy). Please try again or enter 0 to return to the main menu.");
-                        date = Console.ReadLine();
-                    }
-                
-
-                Console.WriteLine("Please provide the quantity, or amount of times you read today.");
-                int quantity = Convert.ToInt32(Console.ReadLine());
-
-                if (quantity == 0) GetUserInput();
+                string date = GetDateInput();
+                int quantity = GetQuantityInput();
 
                 using (var connection = new SqliteConnection(connectionString))
                 {
@@ -105,6 +91,32 @@ namespace habit_tracker
                 }
 
                 GetAllRecords();
+            }
+            
+            string GetDateInput()
+            
+            {
+                Console.WriteLine("Please provide Date in format mm-dd-yyyy. Type 0 to return to main menu.");
+                var date = Console.ReadLine();
+
+                if (date == "0") GetUserInput();
+
+                while (!DateTime.TryParseExact(date, "mm-dd-yyyy", new CultureInfo("en-US"), DateTimeStyles.None, out _))
+                {
+                    Console.WriteLine("\n\nInvalid date provided. (Format: dd-mm-yyyy). Please try again or enter 0 to return to the main menu.");
+                    date = Console.ReadLine();
+                }
+                return date;
+            }   
+
+            int GetQuantityInput()
+            {
+                Console.WriteLine("Please provide the quantity, or amount of times you read today.");
+                int quantity = Convert.ToInt32(Console.ReadLine());
+
+                if (quantity == 0) GetUserInput();
+
+                return quantity;
             }
 
             GetUserInput();
