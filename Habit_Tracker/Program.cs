@@ -82,7 +82,7 @@ namespace habit_tracker
                     while (!DateTime.TryParseExact(date, "mm-dd-yyyy", new CultureInfo("en-US"), DateTimeStyles.None, out _))
                     {
                         Console.WriteLine("\n\nInvalid date provided. (Format: dd-mm-yyyy). Please try again or enter 0 to return to the main menu.");
-                        return date;
+                        date = Console.ReadLine();
                     }
                 
 
