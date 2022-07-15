@@ -1,13 +1,7 @@
 ﻿using Microsoft.Data.Sqlite;
 using System.Globalization;
 
-namespace habit_tracker
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            string connectionString = @"Data Source=habit_tracker.db";
+string connectionString = @"Data Source=habit_tracker.db";
 
             CreateDatabase();
 
@@ -152,7 +146,6 @@ namespace habit_tracker
                     }
                 }
             }
-        }
 
         public class Reading
         {
@@ -161,9 +154,6 @@ namespace habit_tracker
             public int Quantity { get; set; }
         }
 
-    }
-
-}
 
 
 
