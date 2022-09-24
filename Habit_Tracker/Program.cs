@@ -40,10 +40,11 @@ string connectionString = @"Data Source=habit_tracker.db";
                                 new Reading
                                 {
                                     Id = reader.GetInt32(0),
-                                    Date = DateTime.ParseExact(reader.GetString(1), "mm-dd-yyyy", new CultureInfo("en-US"), DateTimeStyles.None, out _),
+                                    Date = DateTime.ParseExact(reader.GetString(1),"mm-dd-yyyy", new CultureInfo("en-US")),
                                     Quantity = reader.GetInt32(2)
                                 }
                                     );
+              
                             }
                         }
                         else
@@ -56,7 +57,7 @@ string connectionString = @"Data Source=habit_tracker.db";
                         Console.WriteLine("-----------------------------------------");
                         foreach (var row in Readingtabledata)
                         {
-                            Console.WriteLine($"{row.Id} | {row.Date} | Books Read: {row.Quantity}");
+                            Console.WriteLine($"{row.Id} | {row.Date.ToString("mm-dd-yyyy")} | Books Read: {row.Quantity}");
 
                         }
                         Console.WriteLine("-----------------------------------------");
@@ -66,7 +67,7 @@ string connectionString = @"Data Source=habit_tracker.db";
                 }
             }
 
-            string CreateRecords()
+            void CreateRecords()
             {
                 string date = GetDateInput();
                 int quantity = GetQuantityInput();
@@ -86,18 +87,54 @@ string connectionString = @"Data Source=habit_tracker.db";
 
                 GetAllRecords();
             }
+
+            void DeleteRecords()
+            {
+                int id = GetIdInput();
+                
+                using (var connection = new SqliteConnection(connectionString))
+                 {
+                    using (var tableCmd = connection.CreateCommand())
+                    {
+                        connection.Open();
+                        tableCmd.CommandText = @"DELETE from Reading WHERE ID = @id";
+                        tableCmd.Parameters.AddWithValue("@id", id);
+                        tableCmd.ExecuteNonQuery();
+                    }
+                }
+            }
+
+            int GetIdInput()
+
+            {
+                Console.WriteLine(@"Please enter the ID of the record you would like to delete from the table below. Type 0 to return to main menu.");
+                GetAllRecords();
+                var input = Console.ReadLine();
+
+                if (input == "0") GetUserInput();
+
+                while (!int.TryParse(input, out _) || Convert.ToInt32(input) < 0)
+                {
+                    Console.WriteLine("\nInvalid id, must be a number. Please try again, or enter 0 to return to the main menu.");
+                    input = Console.ReadLine();
+                }
+                int id = Convert.ToInt32(input);
+
+                return id; 
+
+            }
             
             string GetDateInput()
             
             {
-                Console.WriteLine("Please provide Date in format mm-dd-yyyy. Type 0 to return to main menu.");
+                Console.WriteLine("\nPlease provide Date in format mm-dd-yyyy. Type 0 to return to main menu.");
                 var date = Console.ReadLine();
 
                 if (date == "0") GetUserInput();
 
                 while (!DateTime.TryParseExact(date, "mm-dd-yyyy", new CultureInfo("en-US"), DateTimeStyles.None, out _))
                 {
-                    Console.WriteLine("\n\nInvalid date provided. (Format: dd-mm-yyyy). Please try again or enter 0 to return to the main menu.");
+                    Console.WriteLine("\nInvalid date provided. (Format: mm-dd-yyyy). Please try again or enter 0 to return to the main menu.");
                     date = Console.ReadLine();
                 }
                 return date;
@@ -105,10 +142,18 @@ string connectionString = @"Data Source=habit_tracker.db";
 
             int GetQuantityInput()
             {
-                Console.WriteLine("Please provide the quantity, or amount of times you read today.");
-                int quantity = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("\nPlease provide the quantity, or amount of times you read today.");
+                string input = Console.ReadLine();
 
-                if (quantity == 0) GetUserInput();
+                if (input == "0") GetUserInput();
+
+    //still working on validating Integers here.
+                while (!int.TryParse(input, out _) || Convert.ToInt32(input) < 0)
+                {
+                    Console.WriteLine("\nInvalid quantity, must be a number. Please try again, or enter 0 to return to the main menu.");
+                    input = Console.ReadLine();
+                }
+                int quantity = Convert.ToInt32(input);
 
                 return quantity;
             }
@@ -143,6 +188,13 @@ string connectionString = @"Data Source=habit_tracker.db";
                         case "2":
                             CreateRecords();
                             break;
+                        case "3":
+                            DeleteRecords();
+                            break;
+                        //case "4":
+                           // UpdateRecords();
+                            //break;
+                        
                     }
                 }
             }
@@ -150,9 +202,10 @@ string connectionString = @"Data Source=habit_tracker.db";
         public class Reading
         {
             public int Id { get; set; }
-            public string Date { get; set; }
+            public DateTime Date { get; set; }
             public int Quantity { get; set; }
         }
+
 
 
 
