@@ -218,8 +218,8 @@ string connectionString = @"Data Source=habit_tracker.db";
                             Console.Clear();
                             UpdateRecords();
                             break;
-                        //default:
-                            //Console.WriteLine();
+                        default: Console.WriteLine(" \n Invalid input, please enter a number 0 - 4.");
+                            break;
                         
                     }
                 }
