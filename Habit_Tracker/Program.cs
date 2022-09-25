@@ -90,6 +90,7 @@ string connectionString = @"Data Source=habit_tracker.db";
 
             void DeleteRecords()
             {
+                Console.WriteLine(@"Please enter the ID of the record you would like to delete from the table below. Type 0 to return to main menu.");
                 int id = GetIdInput();
                 
                 using (var connection = new SqliteConnection(connectionString))
@@ -103,11 +104,30 @@ string connectionString = @"Data Source=habit_tracker.db";
                     }
                 }
             }
+            
+            void UpdateRecords()
+            {
+                Console.WriteLine(@"Please enter the ID of the record you would like to update from the table below. Type 0 to return to main menu.");
+                int id = GetIdInput();
+                string date = GetDateInput();
+                int quantity = GetQuantityInput();
+                using (var connection = new SqliteConnection(connectionString))
+                {
+                    using (var tableCmd = connection.CreateCommand())
+                    {
+                        connection.Open();
+                        tableCmd.CommandText = @"UPDATE Reading SET Date = @date, Quantity = @quantity WHERE ID = @id";
+                        tableCmd.Parameters.AddWithValue("@id", id);
+                        tableCmd.Parameters.AddWithValue("@date", date);
+                        tableCmd.Parameters.AddWithValue("@quantity", quantity);
+                        tableCmd.ExecuteNonQuery();
+                    }
+                }
+}
 
             int GetIdInput()
 
             {
-                Console.WriteLine(@"Please enter the ID of the record you would like to delete from the table below. Type 0 to return to main menu.");
                 GetAllRecords();
                 var input = Console.ReadLine();
 
@@ -183,17 +203,23 @@ string connectionString = @"Data Source=habit_tracker.db";
                             closeApp = true;
                             break;
                         case "1":
+                            Console.Clear();
                             GetAllRecords();
                             break;
                         case "2":
+                            Console.Clear();
                             CreateRecords();
                             break;
                         case "3":
+                            Console.Clear(); 
                             DeleteRecords();
                             break;
-                        //case "4":
-                           // UpdateRecords();
-                            //break;
+                        case "4":
+                            Console.Clear();
+                            UpdateRecords();
+                            break;
+                        //default:
+                            //Console.WriteLine();
                         
                     }
                 }
