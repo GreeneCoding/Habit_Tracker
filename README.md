@@ -3,7 +3,7 @@ Habit_Tracker
 Creating my first Console App in C#:
 
 
-<H4>Requirements</H4>
+<H4>Requirements as defined on The C# Academy</H4>
 
     1. This is an application where you’ll register one habit.
     2. This habit can't be tracked by time (ex. hours of sleep), only by quantity (ex. number of water glasses a day)
@@ -18,8 +18,17 @@ Creating my first Console App in C#:
     11. Your project needs to contain a Read Me file where you'll explain how your app works.
     
 <H4>Creating our app database</H4>
+First we define a SQLite db connection string, then using the CreateDatabase() method, the Habit_Tracker app starts by checking if the "reading" SQLite table exists and, if it does not exist, creates it with the following columns; "Id" (Integer, Autoincrementing Primary Key), "Date" (Text), "Quantity" (Integer).
+
+<H4>Collecting User Input via Menu</H4>
+
+Using the GetUserInput() method, A while loop is used to determine if the app is running, and while the app is running, a switch statement is used to collect user input for deciding to complete one of the following actions; selecting all records from the SQLite database, creating a new record in the database, deleting a record in the database, updating a record in the database, or exiting the app.
     
 <H4>Selecting All database entries</H4>
+
+The GetAllRecords() is creating a connection to the SQLite database defined in our connection string, then selecting all records from the reading table we created when we first start our app and displaying the records in the console. 
+
+We created a Reading class to define the members with types that match our SQL table fields, Id, Date, Quantity, then created a Reading list that is used to collect all rows read from the Reading table via the select statement. An if statement is used to check if there is any data returned from the select statement, and then a while loop and boolean is used to add the rows to the Reading list until there are no more rows read. When no more rows are found during the while loop the boolean changes to false, a message is returned and then a foreach loop is used to display the contents 
 
 <H4>Inserting Database Entries</H4>
 
