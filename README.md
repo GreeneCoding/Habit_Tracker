@@ -32,6 +32,9 @@ We created a Reading class to define the members with types that match our SQL t
 
 <H4>Inserting Database Entries</H4>
 
+The CreateRecords() method is used to collect user input and then pass it into our inert SQL statement using paremeterized SQL to update existing records in our SQLite database. The GetDateInput() method prompts the user for the date we will be using in our insert statement, and we are checking the input first with an if statement to see if it is "0" and then returning the user to our GetUserInput() method if true, then uses a while loop to determine if the input is an 
+                int quantity = GetQuantityInput()
+
 <H4>Deleting Database Entries</H4>
 
 <H4>Updating Database Entries</H4>
